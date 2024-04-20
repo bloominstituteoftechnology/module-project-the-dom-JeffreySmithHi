@@ -64,7 +64,7 @@ function moduleProject1() {
     let otherResultNoun = nouns[otherNounNum]
     let otherResultVerb = verbs[otherVerbNum]
 
-    let string = `We need to ${resultVerb} our ${resultNoun} ${resultAdverb}\nin order to ${otherResultVerb} our ${otherResultNoun} ${otherResultAdverb}.`
+    let string = `We need to ${resultVerb} our ${resultNoun} ${resultAdverb}\nin order to ${resultVerb} our ${resultNoun} ${resultAdverb}.`
 
     let speak = document.createElement('p')
     speak.textContent = string
@@ -73,65 +73,64 @@ function moduleProject1() {
     corporateSpeak.appendChild(speak)
     
   // 👉 TASK 4 - Build a "Countdown" widget
-    let numArr = ['5', '4', '3', '2', '1']
+    let numArr = ['4', '3', '2', '1']
     let resultText = 'T-minus'
     let countText = ''
     let countdownP = document.createElement('p')
+    countdownP.textContent = 'T-minus 5...'
     let countWidget = document.getElementsByClassName('widget')[2]
     countWidget.appendChild(countdownP)
 
-      function Countdown(){
+    function Countdown() {
       numArr.forEach((num, i) => {
         setTimeout(() => {
-          countText = `${resultText} ${num}`
-          countdownP.textContent = countText
-        }, i * 1000)
+          if (num === '1') {
+            countText = `${resultText} ${num}...`;
+            countdownP.textContent = countText;
+            setTimeout(() => {
+              countText = 'Liftoff! 🚀';
+              countdownP.textContent = countText;
+            }, 1000);
+          } else {
+            countText = `${resultText} ${num}...`;
+            countdownP.textContent = countText;
+          }
+        }, (i + 1) * 1000);
       });
-      
-      setTimeout(() => {
-        countText = 'Liftoff! 🚀'
-        countdownP.textContent = countText
-      }, numArr.length * 1000)
-      } 
+    }
+    
+    Countdown()
 
-      Countdown()
+      
 
   // 👉 TASK 5 - Build a "Friends" widget
-      let randomPerson1 = 0
-      randomPerson1 += Math.random() * people.length
-      let intrandPer = parseInt(randomPerson1)
-      let person1 = people[intrandPer]
-      let person1fname = person1.fname
-      let person1lname = person1.lname
-      let person1dob = person1.dateOfBirth
-
-      let randomPerson2 = 0
-      randomPerson2 += Math.random() * people.length
-      let intrandPer2 = parseInt(randomPerson2)
-      let person2 = people[intrandPer2]
-      let person2fname = person2.fname
-      let person2lname = person2.lname
-
-      let randomPerson3 = 0
-      randomPerson3 += Math.random() * people.length 
-      let intrandPer3 = parseInt(randomPerson3)
-      let person3 = people[intrandPer3]
-      let person3fname = person3.fname
-      let person3lname = person3.lname
-
-      let randomPerson4 = 0
-      randomPerson4 += Math.random() * people.length 
-      let intrandPer4 = parseInt(randomPerson4)
-      let person4 = people[intrandPer4]
-      let person4fname = person4.fname
-      let person4lname = person4.lname
-
-      let peopleString = `${person1fname} ${person1lname} was born in ${person1dob} and is friends with ${person2fname} ${person2lname}, ${person3fname} ${person3lname} and ${person4fname} ${person4lname}`
-      
-      let friendsString = document.createElement('p')
-      friendsString.textContent = peopleString
-      let friendsWidget = document.getElementsByClassName('widget')[3]
-      friendsWidget.appendChild(friendsString)
+    let person = people[Math.floor(Math.random() * people.length)]
+    let friendsP = document.createElement('p')
+    let friendsWidget = document.getElementsByClassName('widget')[3]
+    friendsWidget.appendChild(friendsP)
+    let yOB = person.dateOfBirth.split('-')[0]
+    let friendSentence = `${person.fname} ${person.lname} was born in ${yOB} and `
+  
+    if(!person.friends.length) {
+      friendSentence += 'has no friends.'
+    } else {
+      friendSentence += 'is friends with '
+      for (let i = 0; i < person.friends.length; i++) {
+        let friendNum = person.friends[i]
+        let friend = people.find(p => p.id === friendNum)
+        let lastFriend = i === person.friends.length - 1
+        let secondToLast = i === person.friends.length - 2
+        if (lastFriend) {
+          friendSentence += `${friend.fname} ${friend.lname}.`
+        } else if (secondToLast) {
+          friendSentence += `${friend.fname} ${friend.lname} and `
+        } else {
+          friendSentence += `${friend.fname} ${friend.lname}, `
+        }
+      }
+    }
+    
+    friendsP.textContent = friendSentence
 
   // 👉 TASK 6 - Make it so user can tab through the widgets
       
